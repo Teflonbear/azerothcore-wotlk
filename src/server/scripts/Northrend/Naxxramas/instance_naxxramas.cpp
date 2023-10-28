@@ -953,6 +953,28 @@ public:
             return true;
         }
 
+    bool AreAllWingsCleared() const
+        {
+            return (GetBossState(BOSS_MAEXXNA) == DONE) && (GetBossState(BOSS_LOATHEB) == DONE) && (GetBossState(BOSS_THADDIUS) == DONE) && (GetBossState(BOSS_HORSEMAN) == DONE);
+        }
+
+    bool CheckRequiredBosses(uint32 bossId, Player const* /* player */) const override ///Saphi boss teleport
+    {
+        switch (bossId)
+        {
+            case BOSS_SAPPHIRON:
+                if (!AreAllWingsCleared())
+                {
+                    return false;
+                }
+                break;
+            default:
+                break;
+        }
+        return true;
+    }    
+
+
         void Update(uint32 diff) override
         {
             if (_speakTimer)
@@ -1194,11 +1216,13 @@ public:
         {
             if (InstanceScript *instance = player->GetInstanceScript())
             {
+                
                 if (instance->CheckRequiredBosses(BOSS_SAPPHIRON))
                 {
                     player->TeleportTo(533, sapphironEntryTP.m_positionX, sapphironEntryTP.m_positionY, sapphironEntryTP.m_positionZ, sapphironEntryTP.m_orientation);
                     return true;
-                }
+                }    
+            
             }
         }
         return false;
