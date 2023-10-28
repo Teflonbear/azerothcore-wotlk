@@ -922,15 +922,15 @@ public:
                 }
 
                 // we are in an instance, and can only summon players in our group with us as leader
-                if (!handler->GetSession()->GetPlayer()->GetGroup() || !targetPlayer->GetGroup() ||
-                        (targetPlayer->GetGroup()->GetLeaderGUID() != handler->GetSession()->GetPlayer()->GetGUID()) ||
-                        (handler->GetSession()->GetPlayer()->GetGroup()->GetLeaderGUID() != handler->GetSession()->GetPlayer()->GetGUID()))
-                    // the last check is a bit excessive, but let it be, just in case
-                {
-                    handler->PSendSysMessage(LANG_CANNOT_SUMMON_TO_INST, nameLink.c_str());
-                    handler->SetSentErrorMessage(true);
-                    return false;
-                }
+                // if (!handler->GetSession()->GetPlayer()->GetGroup() || !targetPlayer->GetGroup() ||
+                //         (targetPlayer->GetGroup()->GetLeaderGUID() != handler->GetSession()->GetPlayer()->GetGUID()) ||
+                //         (handler->GetSession()->GetPlayer()->GetGroup()->GetLeaderGUID() != handler->GetSession()->GetPlayer()->GetGUID()))
+                //     // the last check is a bit excessive, but let it be, just in case
+                // {
+                //     handler->PSendSysMessage(LANG_CANNOT_SUMMON_TO_INST, nameLink.c_str());
+                //     handler->SetSentErrorMessage(true);
+                //     return false;
+                // }
             }
 
             handler->PSendSysMessage(LANG_SUMMONING, nameLink.c_str(), "");
@@ -1015,15 +1015,15 @@ public:
         bool toInstance = gmMap->Instanceable();
 
         // we are in instance, and can summon only player in our group with us as lead
-        if (toInstance && (
-                    !handler->GetSession()->GetPlayer()->GetGroup() || (group->GetLeaderGUID() != handler->GetSession()->GetPlayer()->GetGUID()) ||
-                    (handler->GetSession()->GetPlayer()->GetGroup()->GetLeaderGUID() != handler->GetSession()->GetPlayer()->GetGUID())))
-            // the last check is a bit excessive, but let it be, just in case
-        {
-            handler->SendSysMessage(LANG_CANNOT_SUMMON_TO_INST);
-            handler->SetSentErrorMessage(true);
-            return false;
-        }
+        // if (toInstance && (
+        //             !handler->GetSession()->GetPlayer()->GetGroup() || (group->GetLeaderGUID() != handler->GetSession()->GetPlayer()->GetGUID()) ||
+        //             (handler->GetSession()->GetPlayer()->GetGroup()->GetLeaderGUID() != handler->GetSession()->GetPlayer()->GetGUID())))
+        //     // the last check is a bit excessive, but let it be, just in case
+        // {
+        //     handler->SendSysMessage(LANG_CANNOT_SUMMON_TO_INST);
+        //     handler->SetSentErrorMessage(true);
+        //     return false;
+        // }
 
         for (GroupReference* itr = group->GetFirstMember(); itr != nullptr; itr = itr->next())
         {
