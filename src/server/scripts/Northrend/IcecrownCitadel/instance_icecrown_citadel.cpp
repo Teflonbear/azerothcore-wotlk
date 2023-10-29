@@ -28,6 +28,7 @@
 #include "WorldPacket.h"
 #include "WorldSession.h"
 #include "icecrown_citadel.h"
+#include "Player.h"
 
 enum EventIds
 {
@@ -255,7 +256,8 @@ public:
         void OnPlayerEnter(Player* player) override
         {
             if (TeamIdInInstance == TEAM_NEUTRAL)
-                TeamIdInInstance = player->GetTeamId();
+                TeamIdInInstance = TEAM_ALLIANCE;           //TeamIdInInstance = player->GetTeamId();
+                player->SetFaction(1);                      //set faction to human for every player that enters the raid
 
             // for professor putricide hc
             DoRemoveAurasDueToSpellOnPlayers(SPELL_GAS_VARIABLE);
@@ -293,7 +295,8 @@ public:
                 Map::PlayerList const& players = instance->GetPlayers();
                 if (!players.IsEmpty())
                     if (Player* player = players.begin()->GetSource())
-                        TeamIdInInstance = player->GetTeamId();
+                        TeamIdInInstance = TEAM_ALLIANCE;       //TeamIdInInstance = player->GetTeamId();
+                        //player->SetFaction(1);                //is probably wrong maybe delete later
             }
 
             // apply ICC buff to pets/summons
@@ -544,7 +547,8 @@ public:
                 Map::PlayerList const& players = instance->GetPlayers();
                 if (!players.IsEmpty())
                     if (Player* player = players.begin()->GetSource())
-                        TeamIdInInstance = player->GetTeamId();
+                        TeamIdInInstance = TEAM_ALLIANCE;       //TeamIdInInstance = player->GetTeamId();
+                        //player->SetFaction(1);                //is probably wrong maybe delete later
             }
 
             uint32 entry = data->id1;
@@ -589,7 +593,8 @@ public:
                 Map::PlayerList const& players = instance->GetPlayers();
                 if (!players.IsEmpty())
                     if (Player* player = players.begin()->GetSource())
-                        TeamIdInInstance = player->GetTeamId();
+                        TeamIdInInstance = TEAM_ALLIANCE;       //TeamIdInInstance = player->GetTeamId();
+                        //player->SetFaction(1);                //is probably wrong maybe delete later
             }
 
             switch (entry)
@@ -693,7 +698,9 @@ public:
                 Map::PlayerList const& players = instance->GetPlayers();
                 if (!players.IsEmpty())
                     if (Player* player = players.begin()->GetSource())
-                        TeamIdInInstance = player->GetTeamId();
+                        TeamIdInInstance = TEAM_ALLIANCE;
+                        //player->SetFaction(1732);
+                        //TeamIdInInstance = player->GetTeamId();
             }
 
             switch (go->GetEntry())
