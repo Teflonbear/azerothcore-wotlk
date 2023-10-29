@@ -1007,7 +1007,7 @@ void WorldSession::HandlePlayerLoginFromDB(LoginQueryHolder const& holder)
             {
                 for (auto const& itr : factionsList)
                 {
-                    repMgr.SetOneFactionReputation(sFactionStore.LookupEntry(itr), 42999.f, false);
+                    repMgr.SetOneFactionReputation(sFactionStore.LookupEntry(itr), 3001.f, false); //Changing from exalted (42999.f) to friendly (3001.f)
                 }
             };
 
