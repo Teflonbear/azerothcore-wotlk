@@ -3980,6 +3980,12 @@ enum Mounts
     SPELL_BLAZING_HIPPOGRYPH_150        = 74854,
     SPELL_BLAZING_HIPPOGRYPH_280        = 74855,
 
+    // Glorious Pandaren Mount
+    SPELL_MONKMOUNT_60          = 1000001,
+    SPELL_MONKMOUNT_100         = 1000002,
+    SPELL_MONKMOUNT_150         = 1000003,
+    SPELL_MONKMOUNT_310         = 1000004,
+
     // Celestial Steed
     SPELL_CELESTIAL_STEED_60            = 75619,
     SPELL_CELESTIAL_STEED_100           = 75620,
@@ -4008,7 +4014,8 @@ enum Mounts
    72286 - Invincible (spell_invincible)
    74856 - Blazing Hippogryph (spell_blazing_hippogryph)
    75614 - Celestial Steed (spell_celestial_steed)
-   75973 - X-53 Touring Rocket (spell_x53_touring_rocket) */
+   75973 - X-53 Touring Rocket (spell_x53_touring_rocket)
+   1000000 - Glorious Pandaren Mount (spell_monkmount) */
 class spell_gen_mount : public SpellScript
 {
     PrepareSpellScript(spell_gen_mount);
@@ -5258,6 +5265,7 @@ void AddSC_generic_spell_scripts()
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_big_love_rocket", SPELL_BIG_LOVE_ROCKET_0, SPELL_BIG_LOVE_ROCKET_60, SPELL_BIG_LOVE_ROCKET_100, SPELL_BIG_LOVE_ROCKET_150, SPELL_BIG_LOVE_ROCKET_310, 0);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_invincible", 0, SPELL_INVINCIBLE_60, SPELL_INVINCIBLE_100, SPELL_INVINCIBLE_150, SPELL_INVINCIBLE_310, 0);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_blazing_hippogryph", 0, 0, 0, SPELL_BLAZING_HIPPOGRYPH_150, SPELL_BLAZING_HIPPOGRYPH_280, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_monkmount", 0, SPELL_MONKMOUNT_60, SPELL_MONKMOUNT_100, SPELL_MONKMOUNT_150, SPELL_MONKMOUNT_310, 0);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_celestial_steed", 0, SPELL_CELESTIAL_STEED_60, SPELL_CELESTIAL_STEED_100, SPELL_CELESTIAL_STEED_150, SPELL_CELESTIAL_STEED_280, SPELL_CELESTIAL_STEED_310);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_x53_touring_rocket", 0, 0, 0, SPELL_X53_TOURING_ROCKET_150, SPELL_X53_TOURING_ROCKET_280, SPELL_X53_TOURING_ROCKET_310);
     RegisterSpellScript(spell_gen_upper_deck_create_foam_sword);
