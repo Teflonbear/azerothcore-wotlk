@@ -194,7 +194,7 @@ public:
             events.Reset();
             events.ScheduleEvent(EVENT_BERSERK, 330s);
             events.ScheduleEvent(EVENT_VAMPIRIC_BITE, 15s);
-            events.ScheduleEvent(EVENT_BLOOD_MIRROR, 2500ms);
+            events.ScheduleEvent(EVENT_BLOOD_MIRROR, 331s);
             events.ScheduleEvent(EVENT_DELIRIOUS_SLASH, 10s, 12s);
             events.ScheduleEvent(EVENT_PACT_OF_THE_DARKFALLEN, 20s);
             events.ScheduleEvent(EVENT_SWARMING_SHADOWS, 30s);
