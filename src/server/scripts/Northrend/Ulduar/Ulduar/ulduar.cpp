@@ -532,7 +532,7 @@ struct npc_salvaged_siege_engine : public VehicleAI
             {
                 if (Unit* turret = vehicle->GetPassenger(7))
                 {
-                    if (Vehicle* turretVehicle = me->GetVehicleKit())
+                    if (Vehicle* turretVehicle = vehicle->GetVehicleKit())
                     {
                         if (!turretVehicle->IsVehicleInUse())
                         {
