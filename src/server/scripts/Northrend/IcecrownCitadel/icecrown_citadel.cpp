@@ -630,7 +630,7 @@ public:
                             Talk(EMOTE_DEATH_PLAGUE_WARNING, target);
                             DoCast(target, SPELL_DEATH_PLAGUE);
                         }
-                        _events.ScheduleEvent(EVENT_DEATH_PLAGUE, 15s);
+                        _events.ScheduleEvent(EVENT_DEATH_PLAGUE, 90s); //_events.ScheduleEvent(EVENT_DEATH_PLAGUE, 15s); to often for 5 man
                         break;
                     case EVENT_STOMP:
                         DoCastVictim(SPELL_STOMP);
