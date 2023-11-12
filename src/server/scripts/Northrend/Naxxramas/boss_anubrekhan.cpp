@@ -228,6 +228,7 @@ public:
                 case EVENT_LOCUST_SWARM:
                     Talk(EMOTE_LOCUST);
                     me->CastSpell(me, RAID_MODE(SPELL_LOCUST_SWARM_10, SPELL_LOCUST_SWARM_25), false);
+                    events.RescheduleEvent(EVENT_IMPALE, 25s);
                     events.ScheduleEvent(EVENT_SPAWN_GUARD, 3s);
                     events.Repeat(90s);
                     break;
