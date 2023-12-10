@@ -420,7 +420,7 @@ public:
                     events.ScheduleEvent(EVENT_AIR_MOVEMENT, 0ms);
                     break;
                 case POINT_AIR_PHASE:
-                    me->CastCustomSpell(SPELL_ICE_TOMB_TARGET, SPELLVALUE_MAX_TARGETS, RAID_MODE<int32>(2, 5, 2, 6), nullptr);
+                    me->CastCustomSpell(SPELL_ICE_TOMB_TARGET, SPELLVALUE_MAX_TARGETS, RAID_MODE<int32>(1, 5, 1, 6), nullptr); //change for 5 man normal and hc (2, 5, 2, 6)
                     me->SetFacingTo(float(M_PI));
                     events.ScheduleEvent(EVENT_AIR_MOVEMENT_FAR, 0ms); // won't be processed during cast time anyway, so 0
                     events.ScheduleEvent(EVENT_FROST_BOMB, 7s);
