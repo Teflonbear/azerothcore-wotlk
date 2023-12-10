@@ -766,7 +766,7 @@ public:
         bool _isEmpowered;
         bool _evading;
         bool _canDie;
-        uint32 invocationOrder[3];
+        uint32 invocationOrder[2]; //change from 3 to 2 for 5man
         uint8 currentInvocationIndex;
 
         void Reset() override
@@ -819,8 +819,9 @@ public:
             DoAction(ACTION_CAST_INVOCATION);
             currentInvocationIndex = 0;
             invocationOrder[0] = DATA_PRINCE_VALANAR_GUID;
-            invocationOrder[1] = RAND(DATA_PRINCE_KELESETH_GUID, DATA_PRINCE_TALDARAM_GUID);
-            invocationOrder[2] = DATA_PRINCE_KELESETH_GUID + DATA_PRINCE_TALDARAM_GUID - invocationOrder[1];
+            invocationOrder[1] = DATA_PRINCE_KELESETH_GUID; //change 5 man 
+            //invocationOrder[1] = RAND(DATA_PRINCE_KELESETH_GUID, DATA_PRINCE_TALDARAM_GUID);
+            //invocationOrder[2] = DATA_PRINCE_KELESETH_GUID + DATA_PRINCE_TALDARAM_GUID - invocationOrder[1];
 
             events.ScheduleEvent(EVENT_BERSERK, 10min);
             events.ScheduleEvent(EVENT_KINETIC_BOMB, 18s, 24s);
@@ -986,7 +987,7 @@ public:
                     {
                         uint32 visualSpellId = 0;
                         Creature* current = instance->instance->GetCreature(instance->GetGuidData(invocationOrder[currentInvocationIndex]));
-                        if (++currentInvocationIndex >= 3)
+                        if (++currentInvocationIndex >= 2)  //change from 3 to 2 for 5man
                             currentInvocationIndex = 0;
                         Creature* next = instance->instance->GetCreature(instance->GetGuidData(invocationOrder[currentInvocationIndex]));
                         switch (invocationOrder[currentInvocationIndex])
