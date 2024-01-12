@@ -15,6 +15,13 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * Scripts for spells with SPELLFAMILY_GENERIC which cannot be included in AI script file
+ * of creature using it or can't be bound to any player class.
+ * Ordered alphabetically using scriptname.
+ * Scriptnames of files in this file should be prefixed with "spell_gen_"
+ */
+
 #include "Battlefield.h"
 #include "BattlefieldMgr.h"
 #include "Battleground.h"
@@ -22,25 +29,18 @@
 #include "Cell.h"
 #include "CellImpl.h"
 #include "Chat.h"
-#include "CreatureScript.h"
 #include "GameTime.h"
 #include "GridNotifiers.h"
 #include "Group.h"
 #include "Pet.h"
 #include "ReputationMgr.h"
+#include "ScriptMgr.h"
 #include "SkillDiscovery.h"
 #include "SpellAuraEffects.h"
 #include "SpellScript.h"
-#include "SpellScriptLoader.h"
 #include "Unit.h"
 #include "Vehicle.h"
 #include <array>
-/*
- * Scripts for spells with SPELLFAMILY_GENERIC which cannot be included in AI script file
- * of creature using it or can't be bound to any player class.
- * Ordered alphabetically using scriptname.
- * Scriptnames of files in this file should be prefixed with "spell_gen_"
- */
 
 /// @todo: this import is not necessary for compilation and marked as unused by the IDE
 //  however, for some reasons removing it would cause a damn linking issue
@@ -653,6 +653,7 @@ class spell_gen_area_aura_select_players : public AuraScript
    54847 - Mojo Volley       (spell_gen_select_target_count_15_2)
    59452 - Mojo Volley       (spell_gen_select_target_count_15_2)
    46008 - Negative Energy   (spell_gen_select_target_count_15_5)
+   38017 - Wave A - 1                 (spell_gen_select_target_count_7_1)
    40851 - Disgruntled                (spell_gen_select_target_count_7_1)
    45680 - Shadow Bolt                (spell_gen_select_target_count_7_1)
    45976 - Open Portal                (spell_gen_select_target_count_7_1)
@@ -1951,7 +1952,7 @@ class spell_pvp_trinket_wotf_shared_cd : public SpellScript
         return GetCaster()->GetTypeId() == TYPEID_PLAYER;
     }
 
-    bool Validate(SpellInfo const* /*spellInfo*/) override
+    bool Validate(SpellInfo const* /*spellEntry*/) override
     {
         return ValidateSpellInfo({
             SPELL_WILL_OF_THE_FORSAKEN_COOLDOWN_TRIGGER,
@@ -3980,10 +3981,162 @@ enum Mounts
     SPELL_BLAZING_HIPPOGRYPH_280        = 74855,
 
     // Glorious Pandaren Mount
-    SPELL_MONKMOUNT_60          = 1000001,
-    SPELL_MONKMOUNT_100         = 1000002,
-    SPELL_MONKMOUNT_150         = 1000003,
-    SPELL_MONKMOUNT_310         = 1000004,
+    SPELL_MONK_MOUNT_60                 = 1000001,
+    SPELL_MONK_MOUNT_100                = 1000002,
+    SPELL_MONK_MOUNT_150                = 1000003,
+    SPELL_MONK_MOUNT_310                = 1000004,
+
+    // Magic Broom
+    SPELL_MAGIC_BROOM_MOUNT_60          = 1000041,
+    SPELL_MAGIC_BROOM_MOUNT_100         = 1000042,
+    SPELL_MAGIC_BROOM_MOUNT_150         = 1000043,
+    SPELL_MAGIC_BROOM_MOUNT_310         = 1000044,
+
+    // Alliance Battleship
+    SPELL_ALLIANCE_BATTLESHIP_MOUNT_60  = 1000051,
+    SPELL_ALLIANCE_BATTLESHIP_MOUNT_100 = 1000052,
+    SPELL_ALLIANCE_BATTLESHIP_MOUNT_150 = 1000053,
+    SPELL_ALLIANCE_BATTLESHIP_MOUNT_310 = 1000054,
+
+    // Horde Zeppelin
+    SPELL_HORDE_ZEPPELIN_MOUNT_60       = 1000061,
+    SPELL_HORDE_ZEPPELIN_MOUNT_100      = 1000062,
+    SPELL_HORDE_ZEPPELIN_MOUNT_150      = 1000062,
+    SPELL_HORDE_ZEPPELIN_MOUNT_310      = 1000064,
+
+    // Water Elemental Mount
+    SPELL_WATERELEMENTAL_MOUNT_60       = 1000071,
+    SPELL_WATERELEMENTAL_MOUNT_100      = 1000072,
+    SPELL_WATERELEMENTAL_MOUNT_150      = 1000073,
+    SPELL_WATERELEMENTAL_MOUNT_310      = 1000074,
+
+    // Mana Snapper
+    SPELL_MANA_SNAPPER_MOUNT_60          = 1000081,
+    SPELL_MANA_SNAPPER_MOUNT_100         = 1000082,
+    SPELL_MANA_SNAPPER_MOUNT_150         = 1000083,
+    SPELL_MANA_SNAPPER_MOUNT_310         = 1000084,
+
+    // Hornet
+    SPELL_HORNET_MOUNT_60               = 1000091,
+    SPELL_HORNET_MOUNT_100              = 1000092,
+    SPELL_HORNET_MOUNT_150              = 1000093,
+    SPELL_HORNET_MOUNT_310              = 1000094,
+
+    // Green Deathwalker Mount
+    SPELL_GREEN_DEATHWALKER_MOUNT_60    = 1000121,
+    SPELL_GREEN_DEATHWALKER_MOUNT_100   = 1000122,
+    SPELL_GREEN_DEATHWALKER_MOUNT_150   = 1000123,
+    SPELL_GREEN_DEATHWALKER_MOUNT_310   = 1000124,
+
+    // Black Deathwalker Mount
+    SPELL_BLACK_DEATHWALKER_MOUNT_60    = 1000131,
+    SPELL_BLACK_DEATHWALKER_MOUNT_100   = 1000132,
+    SPELL_BLACK_DEATHWALKER_MOUNT_150   = 1000133,
+    SPELL_BLACK_DEATHWALKER_MOUNT_310   = 1000134,
+
+    // Purple Deathwalker Mount
+	SPELL_PURPLE_DEATHWALKER_MOUNT_60   = 1000141,
+    SPELL_PURPLE_DEATHWALKER_MOUNT_100  = 1000142,
+    SPELL_PURPLE_DEATHWALKER_MOUNT_150  = 1000143,
+    SPELL_PURPLE_DEATHWALKER_MOUNT_310  = 1000144,
+
+    //Blue Deathwalker Mount
+	SPELL_BLUE_DEATHWALKER_MOUNT_60     = 1000151,
+    SPELL_BLUE_DEATHWALKER_MOUNT_100    = 1000152,
+    SPELL_BLUE_DEATHWALKER_MOUNT_150    = 1000153,
+    SPELL_BLUE_DEATHWALKER_MOUNT_310    = 1000154,
+
+    // Bee Mount
+    SPELL_BEE_MOUNT_60                  = 1000161,
+    SPELL_BEE_MOUNT_100                 = 1000162,
+    SPELL_BEE_MOUNT_150                 = 1000163,
+    SPELL_BEE_MOUNT_310                 = 1000164,
+
+    // Black Bee Mount
+	SPELL_BLACK_BEE_MOUNT_60             = 1000171,
+    SPELL_BLACK_BEE_MOUNT_100            = 1000172,
+    SPELL_BLACK_BEE_MOUNT_150            = 1000173,
+    SPELL_BLACK_BEE_MOUNT_310            = 1000174,
+
+    // Red Bee Mount
+	SPELL_RED_BEE_MOUNT_60               = 1000181,
+    SPELL_RED_BEE_MOUNT_100              = 1000182,
+    SPELL_RED_BEE_MOUNT_150              = 1000183,
+    SPELL_RED_BEE_MOUNT_310              = 1000184,
+
+    //Rabbit Mount
+    SPELL_RABBIT_MOUNT_60                = 1000271,
+    SPELL_RABBIT_MOUNT_100               = 1000272,
+    SPELL_RABBIT_MOUNT_150               = 1000273,
+    SPELL_RABBIT_MOUNT_310               = 1000274,
+
+    // Rat Mount
+    SPELL_RAT_MOUNT_60                   = 1000281,
+    SPELL_RAT_MOUNT_100                  = 1000282,
+    SPELL_RAT_MOUNT_150                  = 1000283,
+    SPELL_RAT_MOUNT_310                  = 1000284,
+
+    // Beetle Mount
+    SPELL_BEETLE_MOUNT_60                = 1000321,
+    SPELL_BEETLE_MOUNT_100               = 1000322,
+    SPELL_BEETLE_MOUNT_150               = 1000323,
+    SPELL_BEETLE_MOUNT_310               = 1000324,
+
+    // Wen Lo
+    SPELL_TIGER_MOUNT_60                = 1000401,
+    SPELL_TIGER_MOUNT_100               = 1000402,
+    SPELL_TIGER_MOUNT_150               = 1000403,
+    SPELL_TIGER_MOUNT_310               = 1000404,
+
+    //Green Serpent
+    SPELL_GREEN_PANDARENSERPENT_MOUNT_60                = 1000451,
+    SPELL_GREEN_PANDARENSERPENT_MOUNT_100               = 1000452,
+    SPELL_GREEN_PANDARENSERPENT_MOUNT_150               = 1000453,
+    SPELL_GREEN_PANDARENSERPENT_MOUNT_310               = 1000454,
+
+    //Red Serpent
+    SPELL_RED_PANDARENSERPENT_MOUNT_60                = 1000461,
+    SPELL_RED_PANDARENSERPENT_MOUNT_100               = 1000462,
+    SPELL_RED_PANDARENSERPENT_MOUNT_150               = 1000463,
+    SPELL_RED_PANDARENSERPENT_MOUNT_310               = 1000464,
+
+    //Blue Serpent
+    SPELL_BLUE_PANDARENSERPENT_MOUNT_60                = 1000471,
+    SPELL_BLUE_PANDARENSERPENT_MOUNT_100               = 1000472,
+    SPELL_BLUE_PANDARENSERPENT_MOUNT_150               = 1000473,
+    SPELL_BLUE_PANDARENSERPENT_MOUNT_310               = 1000474,
+
+    //Black Serpent
+    SPELL_BLACK_PANDARENSERPENT_MOUNT_60                = 1000481,
+    SPELL_BLACK_PANDARENSERPENT_MOUNT_100               = 1000482,
+    SPELL_BLACK_PANDARENSERPENT_MOUNT_150               = 1000483,
+    SPELL_BLACK_PANDARENSERPENT_MOUNT_310               = 1000484,
+
+    //Yelloe Serpent
+    SPELL_YELLOW_PANDARENSERPENT_MOUNT_60                = 1000491,
+    SPELL_YELLOW_PANDARENSERPENT_MOUNT_100               = 1000492,
+    SPELL_YELLOW_PANDARENSERPENT_MOUNT_150               = 1000493,
+    SPELL_YELLOW_PANDARENSERPENT_MOUNT_310               = 1000494,
+
+    //Pink Serpent
+    SPELL_PINK_PANDARENSERPENT_MOUNT_60                = 1000501,
+    SPELL_PINK_PANDARENSERPENT_MOUNT_100               = 1000502,
+    SPELL_PINK_PANDARENSERPENT_MOUNT_150               = 1000503,
+    SPELL_PINK_PANDARENSERPENT_MOUNT_310               = 1000504,
+
+    //Purple Serpent
+    SPELL_PURPLE_PANDARENSERPENT_MOUNT_60                = 1000511,
+    SPELL_PURPLE_PANDARENSERPENT_MOUNT_100               = 1000512,
+    SPELL_PURPLE_PANDARENSERPENT_MOUNT_150               = 1000513,
+    SPELL_PURPLE_PANDARENSERPENT_MOUNT_310               = 1000514,
+	
+    //White Serpent
+    SPELL_WHITE_PANDARENSERPENT_MOUNT_60                = 1000521,
+    SPELL_WHITE_PANDARENSERPENT_MOUNT_100               = 1000522,
+    SPELL_WHITE_PANDARENSERPENT_MOUNT_150               = 1000523,
+    SPELL_WHITE_PANDARENSERPENT_MOUNT_310               = 1000524,
+
+
 
     // Celestial Steed
     SPELL_CELESTIAL_STEED_60            = 75619,
@@ -4013,8 +4166,26 @@ enum Mounts
    72286 - Invincible (spell_invincible)
    74856 - Blazing Hippogryph (spell_blazing_hippogryph)
    75614 - Celestial Steed (spell_celestial_steed)
-   75973 - X-53 Touring Rocket (spell_x53_touring_rocket)
-   1000000 - Glorious Pandaren Mount (spell_monkmount) */
+   75973 - X-53 Touring Rocket (spell_x53_touring_rocket) 
+   1000000 - Glorious Pandaren Mount (spell_monk_mount) 
+   1000040 - Magic Broom (spell_magic_broom_mount)
+   1000050 - Alliance Battleship (spell_alliance_battleship_mount)
+   1000060 - Horde Zeppelin (spell_horde_zeppelin_mount)
+   1000070 - Water Elemental Mount (spell_waterelemental_mount)
+   1000080 - Mana Snapper (spell_mana_snapper_mount)
+   1000090 - Hornet Mount (spell_hornet_mount)
+   1000120 - Green Deathwalker Mount (spell_green_deathwalker_mount)
+   1000130 - Black Deathwalker Mount (spell_black_deathwalker_mount)
+   1000140 - Purple Deathwalker Mount (spell_purple_deathwalker_mount)
+   1000150 - Blue Deathwalker Mount (spell_blue_deathwalker_mount)
+   1000160 - Bee Mount (spell_bee_mount)
+   1000170 - Black Bee Mount (spell_black_bee_mount)
+   1000180 - Red Bee Mount (spell_red_bee_mount)
+   1000270 - Rabbit Mount (spell_rabbit_mount)
+   1000280 - Rat Mount (spell_rat_mount)
+   1000320 - Telix Beetle Mount (spell_beetle_mount)
+   1000400 - Wen Lo Mount (spell_tiger_mount)
+   */
 class spell_gen_mount : public SpellScript
 {
     PrepareSpellScript(spell_gen_mount);
@@ -5003,145 +5174,6 @@ class spell_gen_spirit_of_competition_winner : public SpellScript
     }
 };
 
-// 27360 - Lord Valthalak's Amulet
-enum Valthalak
-{
-    SPELL_INSTILL_LORD_VALTHALAK_SPIRIT = 27360,
-    NPC_LORD_VALTHALAK                  = 16042
-};
-
-class spell_gen_valthalak_amulet : public SpellScript
-{
-    PrepareSpellScript(spell_gen_valthalak_amulet)
-
-    SpellCastResult CheckCast()
-    {
-        if (Unit* target = GetExplTargetUnit())
-            if (target->GetEntry() == NPC_LORD_VALTHALAK && target->isDead())
-                return SPELL_CAST_OK;
-
-        return SPELL_FAILED_BAD_TARGETS;
-    }
-
-    void Register() override
-    {
-        OnCheckCast += SpellCheckCastFn(spell_gen_valthalak_amulet::CheckCast);
-    }
-};
-
-enum ScourgeBanner
-{
-    GO_COMMAND_TENT = 176210,
-};
-
-class spell_gen_planting_scourge_banner : public SpellScript
-{
-    PrepareSpellScript(spell_gen_planting_scourge_banner)
-
-    SpellCastResult CheckCast()
-    {
-        if (GameObject* tent = GetCaster()->FindNearestGameObject(GO_COMMAND_TENT, 20.0f))
-            if (tent->GetGoState() != GO_STATE_READY) // If tent is burned down
-                return SPELL_CAST_OK;
-
-        return SPELL_FAILED_CANT_DO_THAT_RIGHT_NOW;
-    }
-
-    void Register() override
-    {
-        OnCheckCast += SpellCheckCastFn(spell_gen_planting_scourge_banner::CheckCast);
-    }
-};
-
-enum Jubling
-{
-    SPELL_JUBLING_COOLDOWN_1_WEEK = 23852
-};
-
-// 23853 - Jubling Cooldown
-class spell_gen_jubling_cooldown : public SpellScript
-{
-    PrepareSpellScript(spell_gen_jubling_cooldown);
-
-    bool Validate(SpellInfo const* /*spellInfo*/) override
-    {
-        return ValidateSpellInfo({ SPELL_JUBLING_COOLDOWN_1_WEEK });
-    }
-
-    void HandleScript(SpellEffIndex /*effIndex*/)
-    {
-        if (Player* target = GetHitPlayer())
-        {
-            target->CastSpell(target, SPELL_JUBLING_COOLDOWN_1_WEEK); // 1 week
-        }
-    }
-
-    void Register() override
-    {
-        OnEffectHitTarget += SpellEffectFn(spell_gen_jubling_cooldown::HandleScript, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
-    }
-};
-
-// 12699 - Yeh'kinya's Bramble
-enum YehkinyaBramble
-{
-    NPC_VALE_SCREECHER       = 5307,
-    NPC_ROGUE_VALE_SCREECHER = 5308
-};
-
-class spell_gen_yehkinya_bramble : public SpellScript
-{
-    PrepareSpellScript(spell_gen_yehkinya_bramble)
-
-    SpellCastResult CheckCast()
-    {
-        if (Unit* target = GetExplTargetUnit())
-            if ((target->GetEntry() == NPC_VALE_SCREECHER || target->GetEntry() == NPC_ROGUE_VALE_SCREECHER) && target->isDead())
-                return SPELL_CAST_OK;
-
-        return SPELL_FAILED_BAD_TARGETS;
-    }
-
-    void Register() override
-    {
-        OnCheckCast += SpellCheckCastFn(spell_gen_yehkinya_bramble::CheckCast);
-    }
-};
-
-// 35244 - Choking Vines
-enum ChokingVines
-{
-    SPELL_CHOKING_VINES = 35244,
-    SPELL_CHOKING_WOUND = 35247
-};
-
-class spell_gen_choking_vines : public AuraScript
-{
-    PrepareAuraScript(spell_gen_choking_vines);
-
-    bool Validate(SpellInfo const* /*spellInfo*/) override
-    {
-        return ValidateSpellInfo({ SPELL_CHOKING_VINES, SPELL_CHOKING_WOUND });
-    }
-
-    void OnApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
-    {
-        if (Unit* target = GetTarget())
-        {
-            if (GetStackAmount() == GetSpellInfo()->StackAmount) // 5 stacks
-            {
-                target->RemoveAurasDueToSpell(SPELL_CHOKING_VINES);
-                target->CastSpell(target, SPELL_CHOKING_WOUND, true); // Unknown if it's a self cast or casted by the source on 5th
-            }
-        }
-    }
-
-    void Register() override
-    {
-        OnEffectApply += AuraEffectApplyFn(spell_gen_choking_vines::OnApply, EFFECT_0, SPELL_AURA_MOD_DECREASE_SPEED, AURA_EFFECT_HANDLE_REAL_OR_REAPPLY_MASK);
-    }
-};
-
 void AddSC_generic_spell_scripts()
 {
     RegisterSpellScript(spell_silithyst);
@@ -5264,7 +5296,32 @@ void AddSC_generic_spell_scripts()
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_big_love_rocket", SPELL_BIG_LOVE_ROCKET_0, SPELL_BIG_LOVE_ROCKET_60, SPELL_BIG_LOVE_ROCKET_100, SPELL_BIG_LOVE_ROCKET_150, SPELL_BIG_LOVE_ROCKET_310, 0);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_invincible", 0, SPELL_INVINCIBLE_60, SPELL_INVINCIBLE_100, SPELL_INVINCIBLE_150, SPELL_INVINCIBLE_310, 0);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_blazing_hippogryph", 0, 0, 0, SPELL_BLAZING_HIPPOGRYPH_150, SPELL_BLAZING_HIPPOGRYPH_280, 0);
-    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_monkmount", 0, SPELL_MONKMOUNT_60, SPELL_MONKMOUNT_100, SPELL_MONKMOUNT_150, SPELL_MONKMOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_monk_mount", 0, SPELL_MONK_MOUNT_60, SPELL_MONK_MOUNT_100, SPELL_MONK_MOUNT_150, SPELL_MONK_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_magic_broom_mount", 0, SPELL_MAGIC_BROOM_MOUNT_60, SPELL_MAGIC_BROOM_MOUNT_100, SPELL_MAGIC_BROOM_MOUNT_150, SPELL_MAGIC_BROOM_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_alliance_battleship_mount", 0, SPELL_ALLIANCE_BATTLESHIP_MOUNT_60, SPELL_ALLIANCE_BATTLESHIP_MOUNT_100, SPELL_ALLIANCE_BATTLESHIP_MOUNT_150, SPELL_ALLIANCE_BATTLESHIP_MOUNT_310, 0);
+	RegisterSpellScriptWithArgs(spell_gen_mount, "spell_horde_zeppelin_mount", 0, SPELL_HORDE_ZEPPELIN_MOUNT_60, SPELL_HORDE_ZEPPELIN_MOUNT_100, SPELL_HORDE_ZEPPELIN_MOUNT_150, SPELL_HORDE_ZEPPELIN_MOUNT_310, 0);
+	RegisterSpellScriptWithArgs(spell_gen_mount, "spell_waterelemental_mount", 0, SPELL_WATERELEMENTAL_MOUNT_60, SPELL_WATERELEMENTAL_MOUNT_100, SPELL_WATERELEMENTAL_MOUNT_150, SPELL_WATERELEMENTAL_MOUNT_310, 0);
+	RegisterSpellScriptWithArgs(spell_gen_mount, "spell_mana_snapper_mount", 0, SPELL_MANA_SNAPPER_MOUNT_60, SPELL_MANA_SNAPPER_MOUNT_100, SPELL_MANA_SNAPPER_MOUNT_150, SPELL_MANA_SNAPPER_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_hornet_mount", 0, SPELL_HORNET_MOUNT_60, SPELL_HORNET_MOUNT_100, SPELL_HORNET_MOUNT_150, SPELL_HORNET_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_green_deathwalker_mount", 0, SPELL_GREEN_DEATHWALKER_MOUNT_60, SPELL_GREEN_DEATHWALKER_MOUNT_100, SPELL_GREEN_DEATHWALKER_MOUNT_150, SPELL_GREEN_DEATHWALKER_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_black_deathwalker_mount", 0, SPELL_BLACK_DEATHWALKER_MOUNT_60, SPELL_BLACK_DEATHWALKER_MOUNT_100, SPELL_BLACK_DEATHWALKER_MOUNT_150, SPELL_BLACK_DEATHWALKER_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_purple_deathwalker_mount", 0, SPELL_PURPLE_DEATHWALKER_MOUNT_60, SPELL_PURPLE_DEATHWALKER_MOUNT_100, SPELL_PURPLE_DEATHWALKER_MOUNT_150, SPELL_PURPLE_DEATHWALKER_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_blue_deathwalker_mount", 0, SPELL_BLUE_DEATHWALKER_MOUNT_60, SPELL_BLUE_DEATHWALKER_MOUNT_100, SPELL_BLUE_DEATHWALKER_MOUNT_150, SPELL_BLUE_DEATHWALKER_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_bee_mount", 0, SPELL_BEE_MOUNT_60, SPELL_BEE_MOUNT_100, SPELL_BEE_MOUNT_150, SPELL_BEE_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_black_bee_mount", 0, SPELL_BLACK_BEE_MOUNT_60, SPELL_BLACK_BEE_MOUNT_100, SPELL_BLACK_BEE_MOUNT_150, SPELL_BLACK_BEE_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_red_bee_mount", 0, SPELL_RED_BEE_MOUNT_60, SPELL_RED_BEE_MOUNT_100, SPELL_RED_BEE_MOUNT_150, SPELL_RED_BEE_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_rabbit_mount", 0, SPELL_RABBIT_MOUNT_60, SPELL_RABBIT_MOUNT_100, SPELL_RABBIT_MOUNT_150, SPELL_RABBIT_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_rat_mount", 0, SPELL_RAT_MOUNT_60, SPELL_RAT_MOUNT_100, SPELL_RAT_MOUNT_150, SPELL_RAT_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_beetle_mount", 0, SPELL_BEETLE_MOUNT_60, SPELL_BEETLE_MOUNT_100, SPELL_BEETLE_MOUNT_150, SPELL_BEETLE_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_tiger_mount", 0, SPELL_TIGER_MOUNT_60, SPELL_TIGER_MOUNT_100, SPELL_TIGER_MOUNT_150, SPELL_TIGER_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_green_pandarenserpent_mount", 0, SPELL_GREEN_PANDARENSERPENT_MOUNT_60, SPELL_GREEN_PANDARENSERPENT_MOUNT_100, SPELL_GREEN_PANDARENSERPENT_MOUNT_150, SPELL_GREEN_PANDARENSERPENT_MOUNT_310, 0);
+	RegisterSpellScriptWithArgs(spell_gen_mount, "spell_red_pandarenserpent_mount", 0, SPELL_RED_PANDARENSERPENT_MOUNT_60, SPELL_RED_PANDARENSERPENT_MOUNT_100, SPELL_RED_PANDARENSERPENT_MOUNT_150, SPELL_RED_PANDARENSERPENT_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_blue_pandarenserpent_mount", 0, SPELL_BLUE_PANDARENSERPENT_MOUNT_60, SPELL_BLUE_PANDARENSERPENT_MOUNT_100, SPELL_BLUE_PANDARENSERPENT_MOUNT_150, SPELL_BLUE_PANDARENSERPENT_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_black_pandarenserpent_mount", 0, SPELL_BLACK_PANDARENSERPENT_MOUNT_60, SPELL_BLACK_PANDARENSERPENT_MOUNT_100, SPELL_BLACK_PANDARENSERPENT_MOUNT_150, SPELL_BLACK_PANDARENSERPENT_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_yellow_pandarenserpent_mount", 0, SPELL_YELLOW_PANDARENSERPENT_MOUNT_60, SPELL_YELLOW_PANDARENSERPENT_MOUNT_100, SPELL_YELLOW_PANDARENSERPENT_MOUNT_150, SPELL_YELLOW_PANDARENSERPENT_MOUNT_310, 0);
+	RegisterSpellScriptWithArgs(spell_gen_mount, "spell_pink_pandarenserpent_mount", 0, SPELL_PINK_PANDARENSERPENT_MOUNT_60, SPELL_PINK_PANDARENSERPENT_MOUNT_100, SPELL_PINK_PANDARENSERPENT_MOUNT_150, SPELL_PINK_PANDARENSERPENT_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_purple_pandarenserpent_mount", 0, SPELL_PURPLE_PANDARENSERPENT_MOUNT_60, SPELL_PURPLE_PANDARENSERPENT_MOUNT_100, SPELL_PURPLE_PANDARENSERPENT_MOUNT_150, SPELL_PURPLE_PANDARENSERPENT_MOUNT_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_white_pandarenserpent_mount", 0, SPELL_WHITE_PANDARENSERPENT_MOUNT_60, SPELL_WHITE_PANDARENSERPENT_MOUNT_100, SPELL_WHITE_PANDARENSERPENT_MOUNT_150, SPELL_WHITE_PANDARENSERPENT_MOUNT_310, 0);    
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_celestial_steed", 0, SPELL_CELESTIAL_STEED_60, SPELL_CELESTIAL_STEED_100, SPELL_CELESTIAL_STEED_150, SPELL_CELESTIAL_STEED_280, SPELL_CELESTIAL_STEED_310);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_x53_touring_rocket", 0, 0, 0, SPELL_X53_TOURING_ROCKET_150, SPELL_X53_TOURING_ROCKET_280, SPELL_X53_TOURING_ROCKET_310);
     RegisterSpellScript(spell_gen_upper_deck_create_foam_sword);
@@ -5291,10 +5348,4 @@ void AddSC_generic_spell_scripts()
     RegisterSpellScript(spell_gen_curse_of_pain);
     RegisterSpellScript(spell_gen_spirit_of_competition_participant);
     RegisterSpellScript(spell_gen_spirit_of_competition_winner);
-    RegisterSpellScript(spell_gen_valthalak_amulet);
-    RegisterSpellScript(spell_gen_planting_scourge_banner);
-    RegisterSpellScript(spell_gen_jubling_cooldown);
-    RegisterSpellScript(spell_gen_yehkinya_bramble);
-    RegisterSpellScript(spell_gen_choking_vines);
 }
-
