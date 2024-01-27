@@ -55,20 +55,6 @@ enum eBonfire
     COUNT_GO_BONFIRE_CITY       = 9,
 };
 
-class go_midsummer_bonfire : public GameObjectScript
-{
-public:
-    go_midsummer_bonfire() : GameObjectScript("go_midsummer_bonfire") { }
-
-    bool OnGossipSelect(Player* player, GameObject*  /*go*/, uint32 /*sender*/, uint32  /*action*/) override
-    {
-        CloseGossipMenuFor(player);
-        // we know that there is only one gossip.
-        player->CastSpell(player, SPELL_STAMP_OUT_BONFIRE, true);
-        return true;
-    }
-};
-
 static bool BonfireStampedOutState[COUNT_GO_BONFIRE_ALLIANCE + COUNT_GO_BONFIRE_HORDE];
 
 // <mapId, zoneId, teamId>, <state>
@@ -1209,13 +1195,55 @@ class spell_midsummer_torch_catch : public SpellScript
     }
 };
 
+// 46592 - Summon Ahune Lieutenant
+class spell_midsummer_summon_ahune_lieutenant : public SpellScript
+{
+    PrepareSpellScript(spell_midsummer_summon_ahune_lieutenant);
+
+    void HandleDummy(SpellEffIndex /*effIndex*/)
+    {
+        Unit* caster = GetCaster();
+        uint32 zoneId = caster->GetZoneId();
+        uint32 npcEntry = 0;
+
+        switch (zoneId)
+        {
+        case 331: // Ashenvale
+            npcEntry = 26116; // Frostwave Lieutenant
+            break;
+        case 405: // Desolace
+            npcEntry = 26178; // Hailstone Lieutenant
+            break;
+        case 33: // Stranglethorn Vale
+            npcEntry = 26204; // Chillwind Lieutenant
+            break;
+        case 51: // Searing Gorge
+            npcEntry = 26214; // Frigid Lieutenant
+            break;
+        case 1377: // Silithus
+            npcEntry = 26215; // Glacial Lieutenant
+            break;
+        case 3483: // Hellfire Peninsula
+            npcEntry = 26216; // Glacial Templar
+            break;
+        }
+
+        if (npcEntry)
+            caster->SummonCreature(npcEntry, caster->GetPosition(), TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, MINUTE * IN_MILLISECONDS);
+    }
+
+    void Register() override
+    {
+        OnEffectHit += SpellEffectFn(spell_midsummer_summon_ahune_lieutenant::HandleDummy, EFFECT_1, SPELL_EFFECT_APPLY_AURA);
+    }
+};
+
 void AddSC_event_midsummer_scripts()
 {
     // Player
     new MidsummerPlayerScript();
 
     // NPCs
-    new go_midsummer_bonfire();
     RegisterCreatureAI(npc_midsummer_bonfire);
     RegisterCreatureAI(npc_midsummer_torch_target);
     RegisterCreatureAI(npc_midsummer_ribbon_pole_target);
@@ -1230,5 +1258,6 @@ void AddSC_event_midsummer_scripts()
     RegisterSpellScript(spell_midsummer_fling_torch);
     RegisterSpellScript(spell_midsummer_juggling_torch);
     RegisterSpellScript(spell_midsummer_torch_catch);
+    RegisterSpellScript(spell_midsummer_summon_ahune_lieutenant);
 }
 
