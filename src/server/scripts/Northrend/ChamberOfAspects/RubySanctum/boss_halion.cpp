@@ -399,7 +399,7 @@ public:
                     events.ScheduleEvent(EVENT_FIERY_COMBUSTION, 25s);
                     break;
                 case EVENT_CHECK_HEALTH:
-                    if (me->HealthBelowPct(75))
+                    if (me->HealthBelowPct(50)) // before it was me->HealthBelowPct(75) make bencounter 2 phase boss fight
                     {
                         Talk(SAY_PHASE_TWO);
                         me->CastSpell(me, SPELL_TWILIGHT_PHASING, false);
@@ -544,10 +544,11 @@ public:
                 case EVENT_CHECK_HEALTH:
                     if (me->HealthBelowPct(50))
                     {
-                        me->CastStop();
-                        me->CastSpell(me, SPELL_TWILIGHT_DIVISION, false);
-                        Talk(SAY_PHASE_THREE);
-                        return;
+                        // // no Phase 3
+                        // me->CastStop();
+                        // me->CastSpell(me, SPELL_TWILIGHT_DIVISION, false);
+                        // Talk(SAY_PHASE_THREE);
+                        // return;
                     }
                     _events.ScheduleEvent(EVENT_CHECK_HEALTH, 1s);
                     break;
