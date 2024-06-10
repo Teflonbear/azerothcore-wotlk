@@ -101,10 +101,10 @@ enum YoggSpells
     SPELL_DIMINISH_POWER                = 64145,
     SPELL_FOCUSED_ANGER                 = 57688,
 
-    // CONSTRICTOR TENTACLE
-    SPELL_LUNGE                         = 64123,
-    SPELL_SQUEEZE_10                    = 64125,
-    SPELL_SQUEEZE_25                    = 64126,
+    // // CONSTRICTOR TENTACLE
+    // SPELL_LUNGE                         = 64123,
+    // SPELL_SQUEEZE_10                    = 64125,
+    // SPELL_SQUEEZE_25                    = 64126,
 
     // CORRUPTOR TENTACLE
     SPELL_APATHY                        = 64156,
@@ -188,7 +188,7 @@ enum NPCsGOs
     NPC_YOGG_SARON_VISION               = 33552,
 
     NPC_CRUSHER_TENTACLE                = 33966, // 50 secs ?
-    NPC_CONSTRICTOR_TENTACLE            = 33983, // 15-20 secs ?
+    // NPC_CONSTRICTOR_TENTACLE            = 33983, // 15-20 secs ?
     NPC_CORRUPTOR_TENTACLE              = 33985, // 30-40 secs ?
 
     NPC_INFLUENCE_TENTACLE              = 33943,
@@ -616,7 +616,7 @@ public:
         {
             if (spellInfo->Id == SPELL_SANITY)
                 if (Aura* aur = target->GetAura(SPELL_SANITY))
-                    aur->SetStackAmount(100);
+                    aur->SetStackAmount(250);
         }
 
         uint32 GetData(uint32 param) const override
@@ -843,10 +843,10 @@ public:
                     SpawnTentacle(NPC_CRUSHER_TENTACLE);
                     events.RepeatEvent((50000 + urand(0, 10000)) * _summonSpeed);
                     break;
-                case EVENT_SARA_P2_SUMMON_T2: // CONSTRICTOR
-                    SpawnTentacle(NPC_CONSTRICTOR_TENTACLE);
-                    events.RepeatEvent((15000 + urand(0, 5000)) * _summonSpeed);
-                    break;
+                // case EVENT_SARA_P2_SUMMON_T2: // CONSTRICTOR
+                //     SpawnTentacle(NPC_CONSTRICTOR_TENTACLE);
+                //     events.RepeatEvent((15000 + urand(0, 5000)) * _summonSpeed);
+                //     break;
                 case EVENT_SARA_P2_SUMMON_T3: // CORRUPTOR
                     SpawnTentacle(NPC_CORRUPTOR_TENTACLE);
                     events.RepeatEvent((30000 + urand(0, 10000)) * _summonSpeed);
@@ -877,7 +877,7 @@ public:
                     me->SetPosition(me->GetPositionX(), me->GetPositionY(), 355, me->GetOrientation());
 
                     SpawnTentacle(NPC_CRUSHER_TENTACLE);
-                    SpawnTentacle(NPC_CONSTRICTOR_TENTACLE);
+                    // SpawnTentacle(NPC_CONSTRICTOR_TENTACLE);
                     SpawnTentacle(NPC_CORRUPTOR_TENTACLE);
                     SpawnTentacle(NPC_CORRUPTOR_TENTACLE);
 
@@ -1219,7 +1219,7 @@ public:
                     break;
                 case EVENT_YS_SUMMON_GUARDIAN:
                     SummonImmortalGuardian();
-                    events.Repeat(10s);
+                    events.Repeat(30s);
                     break;
             }
         }
@@ -1525,7 +1525,7 @@ public:
     {
         boss_yoggsaron_crusher_tentacleAI(Creature* pCreature) : ScriptedAI(pCreature)
         {
-            me->SetCombatMovement(false);
+            SetCombatMovement(false);
             me->CastSpell(me, SPELL_CRUSH, true);
             me->CastSpell(me, SPELL_FOCUSED_ANGER, true);
             me->CastSpell(me, SPELL_DIMINISH_POWER, false);
@@ -1587,7 +1587,7 @@ public:
     {
         boss_yoggsaron_corruptor_tentacleAI(Creature* pCreature) : ScriptedAI(pCreature)
         {
-            me->SetCombatMovement(false);
+            SetCombatMovement(false);
         }
 
         void DoAction(int32 param) override
@@ -1630,84 +1630,84 @@ public:
     };
 };
 
-class boss_yoggsaron_constrictor_tentacle : public CreatureScript
-{
-public:
-    boss_yoggsaron_constrictor_tentacle() : CreatureScript("boss_yoggsaron_constrictor_tentacle") { }
+// class boss_yoggsaron_constrictor_tentacle : public CreatureScript
+// {
+// public:
+//     boss_yoggsaron_constrictor_tentacle() : CreatureScript("boss_yoggsaron_constrictor_tentacle") { }
 
-    CreatureAI* GetAI(Creature* pCreature) const override
-    {
-        return GetUlduarAI<boss_yoggsaron_constrictor_tentacleAI>(pCreature);
-    }
+//     CreatureAI* GetAI(Creature* pCreature) const override
+//     {
+//         return GetUlduarAI<boss_yoggsaron_constrictor_tentacleAI>(pCreature);
+//     }
 
-    struct boss_yoggsaron_constrictor_tentacleAI : public ScriptedAI
-    {
-        boss_yoggsaron_constrictor_tentacleAI(Creature* pCreature) : ScriptedAI(pCreature)
-        {
-            me->SetCombatMovement(false);
-            _checkTimer = 1;
-            _playerGUID.Clear();
-        }
+//     struct boss_yoggsaron_constrictor_tentacleAI : public ScriptedAI
+//     {
+//         boss_yoggsaron_constrictor_tentacleAI(Creature* pCreature) : ScriptedAI(pCreature)
+//         {
+//             SetCombatMovement(false);
+//             _checkTimer = 1;
+//             _playerGUID.Clear();
+//         }
 
-        uint32 _checkTimer;
-        ObjectGuid _playerGUID;
+//         uint32 _checkTimer;
+//         ObjectGuid _playerGUID;
 
-        Unit* SelectConstrictTarget()
-        {
-            Player* target = nullptr;
-            Map::PlayerList const& pList = me->GetMap()->GetPlayers();
-            uint8 num = urand(0, pList.getSize() - 1);
-            uint8 count = 0;
-            for(Map::PlayerList::const_iterator itr = pList.begin(); itr != pList.end(); ++itr, ++count)
-            {
-                if (me->GetDistance(itr->GetSource()) > 10 || !itr->GetSource()->IsAlive() || itr->GetSource()->IsGameMaster())
-                    continue;
-                if (itr->GetSource()->HasAura(SPELL_SQUEEZE) || itr->GetSource()->HasAura(SPELL_INSANE1))
-                    continue;
+//         Unit* SelectConstrictTarget()
+//         {
+//             Player* target = nullptr;
+//             Map::PlayerList const& pList = me->GetMap()->GetPlayers();
+//             uint8 num = urand(0, pList.getSize() - 1);
+//             uint8 count = 0;
+//             for(Map::PlayerList::const_iterator itr = pList.begin(); itr != pList.end(); ++itr, ++count)
+//             {
+//                 if (me->GetDistance(itr->GetSource()) > 10 || !itr->GetSource()->IsAlive() || itr->GetSource()->IsGameMaster())
+//                     continue;
+//                 if (itr->GetSource()->HasAura(SPELL_SQUEEZE) || itr->GetSource()->HasAura(SPELL_INSANE1))
+//                     continue;
 
-                if (count <= num || !target)
-                    target = itr->GetSource();
-                else
-                    break;
-            }
+//                 if (count <= num || !target)
+//                     target = itr->GetSource();
+//                 else
+//                     break;
+//             }
 
-            return target;
-        }
+//             return target;
+//         }
 
-        void UpdateAI(uint32 diff) override
-        {
-            if (_checkTimer)
-            {
-                _checkTimer += diff;
-                if (_checkTimer >= 1000 && !me->HasUnitState(UNIT_STATE_STUNNED))
-                {
-                    if (Unit* target = SelectConstrictTarget())
-                    {
-                        target->CastSpell(me, SPELL_LUNGE, true);
-                        target->CastSpell(target, SPELL_SQUEEZE, true);
-                        _playerGUID = target->GetGUID();
-                        _checkTimer = 0;
-                        return;
-                    }
+//         void UpdateAI(uint32 diff) override
+//         {
+//             if (_checkTimer)
+//             {
+//                 _checkTimer += diff;
+//                 if (_checkTimer >= 1000 && !me->HasUnitState(UNIT_STATE_STUNNED))
+//                 {
+//                     if (Unit* target = SelectConstrictTarget())
+//                     {
+//                         target->CastSpell(me, SPELL_LUNGE, true);
+//                         target->CastSpell(target, SPELL_SQUEEZE, true);
+//                         _playerGUID = target->GetGUID();
+//                         _checkTimer = 0;
+//                         return;
+//                     }
 
-                    _checkTimer = 1;
-                }
-            }
-        }
+//                     _checkTimer = 1;
+//                 }
+//             }
+//         }
 
-        void DoAction(int32 param) override
-        {
-            if (param == ACTION_REMOVE_STUN)
-                me->RemoveAura(SPELL_SHATTERED_ILLUSION);
-        }
+//         void DoAction(int32 param) override
+//         {
+//             if (param == ACTION_REMOVE_STUN)
+//                 me->RemoveAura(SPELL_SHATTERED_ILLUSION);
+//         }
 
-        void JustDied(Unit*) override
-        {
-            if (Unit* player = ObjectAccessor::GetUnit(*me, _playerGUID))
-                player->RemoveAura(SPELL_SQUEEZE);
-        }
-    };
-};
+//         void JustDied(Unit*) override
+//         {
+//             if (Unit* player = ObjectAccessor::GetUnit(*me, _playerGUID))
+//                 player->RemoveAura(SPELL_SQUEEZE);
+//         }
+//     };
+// };
 
 class boss_yoggsaron_keeper : public CreatureScript
 {
@@ -3031,7 +3031,7 @@ void AddSC_boss_yoggsaron()
     new boss_yoggsaron_death_orb();
     new boss_yoggsaron_crusher_tentacle();
     new boss_yoggsaron_corruptor_tentacle();
-    new boss_yoggsaron_constrictor_tentacle();
+    // new boss_yoggsaron_constrictor_tentacle();
     new boss_yoggsaron_keeper();
     new boss_yoggsaron_descend_portal();
     new boss_yoggsaron_influence_tentacle();
@@ -3069,4 +3069,4 @@ void AddSC_boss_yoggsaron()
     new achievement_yogg_saron_he_waits_dreaming("achievement_yogg_saron_he_waits_dreaming_chamber", ACTION_ILLUSION_DRAGONS);
     new achievement_yogg_saron_he_waits_dreaming("achievement_yogg_saron_he_waits_dreaming_icecrown", ACTION_ILLUSION_ICECROWN);
     new achievement_yogg_saron_kiss_and_make_up();
-}
+}	
