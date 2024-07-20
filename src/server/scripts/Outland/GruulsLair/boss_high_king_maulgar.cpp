@@ -37,7 +37,7 @@ enum HighKingMaulgar
     SPELL_FLURRY                = 33232,
 
     // Olm the Summoner
-    SPELL_DARK_DECAY            = 33129,
+    SPELL_CHAOSBOLT            	= 85004,
     SPELL_DEATH_COIL            = 33130,
     SPELL_SUMMON_WFH            = 33131,
 
@@ -205,10 +205,10 @@ struct boss_olm_the_summoner : public ScriptedAI
         {
             DoCastSelf(SPELL_SUMMON_WFH);
             context.Repeat(48500ms);
-        }).Schedule(6050ms, [this](TaskContext context)
+        }).Schedule(3050ms, [this](TaskContext context)
         {
-            DoCastVictim(SPELL_DARK_DECAY);
-            context.Repeat(6050ms);
+            DoCastVictim(SPELL_CHAOSBOLT);
+            context.Repeat(3050ms);
         }).Schedule(6500ms, [this](TaskContext context)
         {
             if (me->HealthBelowPct(90))

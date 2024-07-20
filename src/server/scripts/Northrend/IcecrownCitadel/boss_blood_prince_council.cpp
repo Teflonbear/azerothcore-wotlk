@@ -1025,7 +1025,7 @@ public:
                         me->CastSpell(target, SPELL_KINETIC_BOMB_TARGET, false);
                         Talk(SAY_VALANAR_SPECIAL);
                     }
-                    events.ScheduleEvent(EVENT_KINETIC_BOMB, me->GetMap()->Is25ManRaid() ? 20s + 500ms : 30s + 500ms);
+                    events.ScheduleEvent(EVENT_KINETIC_BOMB, me->GetMap()->Is25ManRaid() ? 20s + 500ms : 90s + 500ms);
                     break;
                 case EVENT_SHOCK_VORTEX:
                     if (_isEmpowered)
@@ -1385,7 +1385,7 @@ public:
         void Reset() override
         {
             _events.Reset();
-            _events.RescheduleEvent(EVENT_BOMB_DESPAWN, 1min);
+            _events.RescheduleEvent(EVENT_BOMB_DESPAWN, 30s);
             me->SetWalk(true);
             exploded = false;
 

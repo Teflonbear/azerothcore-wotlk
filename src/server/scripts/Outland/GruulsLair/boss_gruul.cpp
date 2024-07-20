@@ -83,7 +83,7 @@ struct boss_gruul : public BossAI
         }).Schedule(_caveInTimer, [this](TaskContext context)
         {
             DoCastRandomTarget(SPELL_CAVE_IN);
-            if (_caveInTimer > 4000ms)
+            if (_caveInTimer > 10000ms)
             {
                 _caveInTimer = _caveInTimer - 1500ms;
             }
