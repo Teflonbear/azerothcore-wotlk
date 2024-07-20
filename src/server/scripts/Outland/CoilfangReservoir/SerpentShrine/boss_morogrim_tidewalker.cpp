@@ -108,7 +108,7 @@ struct boss_morogrim_tidewalker : public BossAI
             if (me->HealthAbovePct(25))
             {
                 Talk(EMOTE_WATERY_GRAVE);
-                me->CastCustomSpell(SPELL_WATERY_GRAVE, SPELLVALUE_MAX_TARGETS, 4, me, false);
+                me->CastCustomSpell(SPELL_WATERY_GRAVE, SPELLVALUE_MAX_TARGETS, 1, me, false);
             }
             else
             {
@@ -151,7 +151,7 @@ class spell_morogrim_tidewalker_watery_grave : public SpellScript
 
     void FilterTargets(std::list<WorldObject*>& targets)
     {
-        uint8 maxSize = 4;
+        uint8 maxSize = 1;
         Unit* caster = GetCaster();
 
         targets.remove_if([caster](WorldObject const* target) -> bool
@@ -170,7 +170,7 @@ class spell_morogrim_tidewalker_watery_grave : public SpellScript
     {
         PreventHitDefaultEffect(effIndex);
         if (Unit* target = GetHitUnit())
-            if (_targetNumber < 4)
+            if (_targetNumber < 1)
                 GetCaster()->CastSpell(target, wateryGraveIds[_targetNumber++], true);
     }
 
@@ -221,4 +221,3 @@ void AddSC_boss_morogrim_tidewalker()
     RegisterSpellScript(spell_morogrim_tidewalker_watery_grave);
     RegisterSpellScript(spell_morogrim_tidewalker_water_globule_new_target);
 }
-

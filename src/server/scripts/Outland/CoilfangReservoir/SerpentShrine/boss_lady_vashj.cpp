@@ -400,7 +400,7 @@ class spell_lady_vashj_summons : public SpellScript
     {
         // Filter targets by distance depending on the spell
         // Coilfang Elites/Striders spawns on top of the stairs. The others at the foot of the stairs.
-        bool top = GetSpellInfo()->Id == SPELL_SUMMON_COILFANG_ELITE || GetSpellInfo()->Id == SPELL_SUMMON_COILFANG_STRIDER;
+        bool top = GetSpellInfo()->Id == SPELL_SUMMON_COILFANG_ELITE || GetSpellInfo()->Id == SPELL_SUMMON_COILFANG_STRIDER || GetSpellInfo()->Id == SPELL_SUMMON_TAINTED_ELEMENTAL;
         float minDist = top ? 25.f : 60.f;
         float maxDist = top ? 60.f : 100.f;
 
